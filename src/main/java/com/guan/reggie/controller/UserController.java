@@ -23,7 +23,7 @@ public class UserController {
     private UserService userService;
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user){
-
+        System.out.println("aaa");
         return null;
     }
 }
