@@ -5,6 +5,7 @@ E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\impl\Emplo
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\SetmealService.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\dto\SetmealDto.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\DishFlavorService.java
+E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\entity\User.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\entity\DishFlavor.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\entity\SetmealDish.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\filter\LoginCheckFilter.java
@@ -21,7 +22,9 @@ E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\entity\Employee.ja
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\impl\CategoryServiceImpl.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\common\GlobalExceptionHandler.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\impl\DishFlavorServiceImpl.java
+E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\impl\UserServiceImpl.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\impl\SetmealDishServiceImpl.java
+E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\utils\ValidateCodeUtils.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\config\MybatisPlusConfig.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\mapper\DishFlavorMapper.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\mapper\EmployeeMapper.java
@@ -29,13 +32,17 @@ E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\DishServic
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\mapper\SetmealDishMapper.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\CategoryService.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\entity\Dish.java
+E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\controller\UserController.java
+E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\mapper\UserMapper.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\common\BaseContext.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\mapper\CategoryMapper.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\controller\CommonController.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\SetmealDishService.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\impl\SetmealServiceImpl.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\controller\CategoryController.java
+E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\utils\SMSUtils.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\controller\EmployeeController.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\common\JacksonObjectMapper.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\mapper\DishMapper.java
 E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\EmployeeService.java
+E:\code\project\reggie_take_out\src\main\java\com\guan\reggie\service\UserService.java
