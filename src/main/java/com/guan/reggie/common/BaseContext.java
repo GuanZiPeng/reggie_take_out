@@ -16,6 +16,7 @@ public class BaseContext {
 
      //获取用户id
      public static Long getCurrentId(){
+         System.out.println("test");
          return threadLocal.get();
      }
 }
