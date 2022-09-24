@@ -24,6 +24,7 @@ public class UserController {
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user){
         System.out.println("aaa");
+        System.out.println("aaa");
         return null;
     }
 }
