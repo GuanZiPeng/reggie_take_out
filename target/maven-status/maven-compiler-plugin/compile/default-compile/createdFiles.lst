@@ -1,4 +1,6 @@
 com\guan\reggie\mapper\SetmealDishMapper.class
+com\guan\reggie\controller\ShoppingCartController.class
+com\guan\reggie\mapper\AddressBookMapper.class
 com\guan\reggie\config\MybatisPlusConfig.class
 com\guan\reggie\dto\DishDto.class
 com\guan\reggie\service\SetmealDishService.class
@@ -10,8 +12,12 @@ com\guan\reggie\common\JacksonObjectMapper.class
 com\guan\reggie\controller\CategoryController.class
 com\guan\reggie\service\DishFlavorService.class
 com\guan\reggie\service\CategoryService.class
+com\guan\reggie\service\impl\ShoppingCartServiceImpl.class
 com\guan\reggie\entity\SetmealDish.class
 com\guan\reggie\service\impl\SetmealServiceImpl.class
+com\guan\reggie\entity\AddressBook.class
+com\guan\reggie\service\impl\AddressBookServiceImpl.class
+com\guan\reggie\service\ShoppingCartService.class
 com\guan\reggie\entity\DishFlavor.class
 com\guan\reggie\service\impl\EmployeeServiceImpl.class
 com\guan\reggie\common\MyMetaObjectHandler.class
@@ -21,12 +27,16 @@ com\guan\reggie\common\CustomException.class
 com\guan\reggie\mapper\SetmealMapper.class
 com\guan\reggie\filter\LoginCheckFilter.class
 com\guan\reggie\common\R.class
+com\guan\reggie\mapper\ShoppingCartMapper.class
 com\guan\reggie\controller\SetmealController.class
+com\guan\reggie\service\AddressBookService.class
 com\guan\reggie\service\DishService.class
 com\guan\reggie\controller\EmployeeController.class
 com\guan\reggie\service\EmployeeService.class
 com\guan\reggie\controller\DishController.class
 com\guan\reggie\config\WebMvcConfig.class
+com\guan\reggie\controller\AddressBookController.class
+com\guan\reggie\entity\ShoppingCart.class
 com\guan\reggie\entity\Employee.class
 com\guan\reggie\service\UserService.class
 com\guan\reggie\entity\Dish.class

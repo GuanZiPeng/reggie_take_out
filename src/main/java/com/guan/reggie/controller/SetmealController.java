@@ -53,19 +53,19 @@ public class SetmealController {
 
     //分页查询
     @GetMapping("/page")
-    public R<Page> page(Integer page,Integer pageSize,String name){
+    public R<Page> page(Integer page, Integer pageSize, String name) {
 
         //创建分页对象
-        Page<Setmeal> pageInfo=new Page<>();
-        Page<SetmealDto>setmealDtoPage=new Page<>();
+        Page<Setmeal> pageInfo = new Page<>();
+        Page<SetmealDto> setmealDtoPage = new Page<>();
         //构建条件对象
-        LambdaQueryWrapper<Setmeal> queryWrap=new LambdaQueryWrapper();
-        queryWrap.like(StringUtils.isNotBlank(name),Setmeal::getName,name);
-        queryWrap.orderByDesc(Setmeal ::getUpdateTime);
-        setmealService.page(pageInfo,queryWrap);
+        LambdaQueryWrapper<Setmeal> queryWrap = new LambdaQueryWrapper();
+        queryWrap.like(StringUtils.isNotBlank(name), Setmeal::getName, name);
+        queryWrap.orderByDesc(Setmeal::getUpdateTime);
+        setmealService.page(pageInfo, queryWrap);
 
         //进行文件拷贝
-        BeanUtils.copyProperties(pageInfo,setmealDtoPage,"records");
+        BeanUtils.copyProperties(pageInfo, setmealDtoPage, "records");
         List<Setmeal> records = pageInfo.getRecords();
         List<SetmealDto> list = records.stream().map((item) -> {
             SetmealDto setmealDto = new SetmealDto();
@@ -83,9 +83,9 @@ public class SetmealController {
 
     //修改检查组，回显内容
     @GetMapping("/{id}")
-    public R<SetmealDto> getById(@PathVariable Long id){
+    public R<SetmealDto> getById(@PathVariable Long id) {
         try {
-            SetmealDto setmealDto=setmealService.getByIdWithDish(id);
+            SetmealDto setmealDto = setmealService.getByIdWithDish(id);
             return R.success(setmealDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ public class SetmealController {
 
     //修改套餐
     @PutMapping
-    public R<String> editSetmeal(@RequestBody SetmealDto setmealDto){
+    public R<String> editSetmeal(@RequestBody SetmealDto setmealDto) {
         try {
             setmealService.editSetmeal(setmealDto);
             return R.success("修改套餐成功！");
@@ -107,7 +107,7 @@ public class SetmealController {
 
     //删除套餐
     @DeleteMapping
-    public R<String> deleteSetmeal(String ids){
+    public R<String> deleteSetmeal(String ids) {
 
         //分割字符串
         String[] split = ids.split(",");
@@ -122,13 +122,13 @@ public class SetmealController {
 
     //设置套餐状态
     @PostMapping("/status/{status}")
-    public R<String> editStatus(@PathVariable Integer status,String ids){
+    public R<String> editStatus(@PathVariable Integer status, String ids) {
         //分割字符串
         String[] split = ids.split(",");
         try {
-            List<Setmeal> setmeals=new ArrayList<>();
+            List<Setmeal> setmeals = new ArrayList<>();
             for (String id : split) {
-                Setmeal setmeal=new Setmeal();
+                Setmeal setmeal = new Setmeal();
                 setmeal.setId(Long.valueOf(id));
                 setmeal.setStatus(status);
                 setmeals.add(setmeal);
@@ -139,5 +139,22 @@ public class SetmealController {
             e.printStackTrace();
             return R.error("修改套餐状态失败");
         }
+    }
+
+    //查询套餐信息
+    @GetMapping("/list")
+    public R<List<Setmeal>> list(Long categoryId, Integer status) {
+        LambdaQueryWrapper<Setmeal> queryWrap = new LambdaQueryWrapper<>();
+        queryWrap.eq(categoryId != null, Setmeal::getCategoryId, categoryId);
+        queryWrap.eq(status != null, Setmeal::getStatus, status);
+        queryWrap.orderByDesc(Setmeal::getUpdateTime);
+        try {
+            List<Setmeal> list = setmealService.list(queryWrap);
+            return R.success(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error("查询套餐失败！");
+        }
+
     }
 }

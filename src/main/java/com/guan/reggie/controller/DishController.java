@@ -6,7 +6,9 @@ import com.guan.reggie.common.R;
 import com.guan.reggie.dto.DishDto;
 import com.guan.reggie.entity.Category;
 import com.guan.reggie.entity.Dish;
+import com.guan.reggie.entity.DishFlavor;
 import com.guan.reggie.service.CategoryService;
+import com.guan.reggie.service.DishFlavorService;
 import com.guan.reggie.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +35,9 @@ public class DishController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private DishFlavorService dishFlavorService;
 
     //新增菜品
     @PostMapping
@@ -123,7 +128,7 @@ public class DishController {
         return R.success("修改菜品成功！");
     }
 
-    //根据条件查询菜品
+   /* //根据条件查询菜品 1.0
     @GetMapping("/list")
     public R<List<Dish>> list(Dish dish) {
 
@@ -133,6 +138,41 @@ public class DishController {
         try {
             List<Dish> list = dishService.list(queryWrap);
             return R.success(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error("查询菜品失败");
+        }
+
+    }*/
+
+    //根据条件查询菜品 1.1
+    @GetMapping("/list")
+    public R<List<DishDto>> list(Dish dish) {
+
+        LambdaQueryWrapper<Dish> queryWrap = new LambdaQueryWrapper<>();
+        queryWrap.eq(Dish::getCategoryId, dish.getCategoryId());
+        queryWrap.orderByDesc(Dish::getUpdateTime);
+        try {
+            List<Dish> list = dishService.list(queryWrap);
+
+            List<DishDto> dishDtoList = list.stream().map((item) -> {
+                DishDto dishDto = new DishDto();
+                BeanUtils.copyProperties(item, dishDto);
+                Long categoryId = item.getCategoryId();//菜品分类id
+                //根据id查询分类信息
+                Category category = categoryService.getById(categoryId);
+                if (category != null) {
+                    String categoryName = category.getName();
+                    dishDto.setCategoryName(categoryName);
+                }
+                Long dishId = item.getId();
+                LambdaQueryWrapper<DishFlavor> queryWrapper=new LambdaQueryWrapper<>();
+                queryWrapper.eq(DishFlavor::getDishId,dishId);
+                List<DishFlavor> list1 = dishFlavorService.list(queryWrapper);
+                dishDto.setFlavors(list1);
+                return dishDto;
+            }).collect(Collectors.toList());
+            return R.success(dishDtoList);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error("查询菜品失败");
