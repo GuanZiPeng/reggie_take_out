@@ -13,6 +13,7 @@ import io.lettuce.core.api.async.RedisTransactionalAsyncCommands;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -163,7 +164,6 @@ public class SetmealController {
     //查询套餐信息
     @GetMapping("/list")
     public R<List<Setmeal>> list(Long categoryId, Integer status) {
-
         List<Setmeal> list = null;
         //从redis中查询是否存在数据
         String key = "setmeal_" + categoryId + "_" + status;
