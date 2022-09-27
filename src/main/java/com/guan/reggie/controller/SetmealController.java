@@ -9,13 +9,17 @@ import com.guan.reggie.entity.Setmeal;
 import com.guan.reggie.service.CategoryService;
 import com.guan.reggie.service.SetmealDishService;
 import com.guan.reggie.service.SetmealService;
+import io.lettuce.core.api.async.RedisTransactionalAsyncCommands;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -37,12 +41,18 @@ public class SetmealController {
     @Autowired
     private SetmealDishService setmealDishService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     //新增套餐
     @PostMapping
     public R<String> save(@RequestBody SetmealDto setmealDto) {
         try {
             //保存套餐信息
             setmealService.saveWithDish(setmealDto);
+            //删除redis缓存数据
+            Set keys = redisTemplate.keys("setmeal_*");
+            redisTemplate.delete(keys);
             return R.success("添加套餐成功！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,6 +108,9 @@ public class SetmealController {
     public R<String> editSetmeal(@RequestBody SetmealDto setmealDto) {
         try {
             setmealService.editSetmeal(setmealDto);
+            //删除redis缓存数据
+            Set keys = redisTemplate.keys("setmeal_*");
+            redisTemplate.delete(keys);
             return R.success("修改套餐成功！");
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,6 +126,9 @@ public class SetmealController {
         String[] split = ids.split(",");
         try {
             setmealService.deleteById(split);
+            //删除redis缓存数据
+            Set keys = redisTemplate.keys("setmeal_*");
+            redisTemplate.delete(keys);
             return R.success("删除套餐成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,6 +150,9 @@ public class SetmealController {
                 setmeals.add(setmeal);
             }
             setmealService.updateBatchById(setmeals);
+            //删除redis缓存数据
+            Set keys = redisTemplate.keys("setmeal_*");
+            redisTemplate.delete(keys);
             return R.success("修改套餐状态成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,16 +163,28 @@ public class SetmealController {
     //查询套餐信息
     @GetMapping("/list")
     public R<List<Setmeal>> list(Long categoryId, Integer status) {
-        LambdaQueryWrapper<Setmeal> queryWrap = new LambdaQueryWrapper<>();
-        queryWrap.eq(categoryId != null, Setmeal::getCategoryId, categoryId);
-        queryWrap.eq(status != null, Setmeal::getStatus, status);
-        queryWrap.orderByDesc(Setmeal::getUpdateTime);
-        try {
-            List<Setmeal> list = setmealService.list(queryWrap);
+
+        List<Setmeal> list = null;
+        //从redis中查询是否存在数据
+        String key = "setmeal_" + categoryId + "_" + status;
+        list = (List<Setmeal>) redisTemplate.opsForValue().get(key);
+        //判断
+        if (list != null) {
             return R.success(list);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.error("查询套餐失败！");
+        } else {
+            LambdaQueryWrapper<Setmeal> queryWrap = new LambdaQueryWrapper<>();
+            queryWrap.eq(categoryId != null, Setmeal::getCategoryId, categoryId);
+            queryWrap.eq(status != null, Setmeal::getStatus, status);
+            queryWrap.orderByDesc(Setmeal::getUpdateTime);
+            try {
+                list = setmealService.list(queryWrap);
+                //将数据保存到redis中
+                redisTemplate.opsForValue().set(key,list,60, TimeUnit.MINUTES);
+                return R.success(list);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return R.error("查询套餐失败！");
+            }
         }
 
     }
